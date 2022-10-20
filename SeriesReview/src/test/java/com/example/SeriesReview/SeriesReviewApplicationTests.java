@@ -11,12 +11,9 @@ import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class SeriesReviewApplicationTests {
-	@Autowired
-	private SeriesReviewRepository repository;
 
-//	@Test
-//	void contextLoads() {
-//		when(repository.findAll().thenReturn(Stream)
-//	}
 
+	@Test
+	void contextLoads() {
+	}
 }

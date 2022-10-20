@@ -1,9 +1,13 @@
 package com.example.SeriesReview.web;
 
 import javax.persistence.*;
+import java.util.HashSet;
+import java.util.Set;
+
 @Entity
-@Table(name = "SERIES")
+@Table(name = "SERIES_INFO")
 public class SeriesEntity {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long SerId;
@@ -19,6 +23,19 @@ public class SeriesEntity {
 
     @Column(name = "availability")
     private Boolean availability;
+
+    public SeriesEntity() {
+    }
+
+    public SeriesEntity(String title, String yor, String category, Boolean availability) {
+        this.title = title;
+        this.yor = yor;
+        this.category = category;
+        this.availability = availability;
+    }
+
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY,mappedBy = "user_series")
+//    private Set<SeriesEntity> series = new HashSet<>();
 
     public Long getSerId() {
         return SerId;
@@ -60,9 +77,9 @@ public class SeriesEntity {
         this.availability = availability;
     }
 
-    @Override
-    public String toString() {
-        return "SeriesEntity [SerId=" + SerId + ", title=" + title +
-                ", Year of Release=" + yor + ", category=" + category + ", available=" + availability + "]";
-    }
+//    @Override
+//    public String toString() {
+//        return "SeriesEntity [SerId=" + SerId + ", title=" + title +
+//                ", Year of Release=" + yor + ", category=" + category + ", available=" + availability + "]";
+//    }
 }

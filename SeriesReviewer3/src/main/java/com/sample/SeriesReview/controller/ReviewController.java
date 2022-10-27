@@ -10,7 +10,8 @@ import com.sample.SeriesReview.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class ReviewController {
@@ -67,32 +68,40 @@ public class ReviewController {
     }
 
     @RequestMapping(value = "/topInYear/{year}/{score}", method = RequestMethod.GET)
-    public ReviewEntity topInYear(@PathVariable String year, @PathVariable Integer score) {
-        {
+    public List<ReviewEntity> topInYear(@PathVariable String year, @PathVariable Integer score)
+    {
             Integer scoreValue = score;
             List<ReviewEntity> reviewList = review.findAll();
+            List<ReviewEntity> yearList = new ArrayList<>();
+            List<ReviewEntity> reviewYearList =new ArrayList<>();
+//        System.out.println("yearList"+reviewList);
             for (ReviewEntity RE : reviewList) {
-
-                if (year.equals(RE.getRYear()) && scoreValue == RE.getScore()) {
-                    return RE;
-                }
+                  if (year.toLowerCase().equals(RE.getRYear().toLowerCase())) {
+//                      System.out.println("hello"+RE);
+                      yearList.add(RE);
+                  }
             }
-            return null;
-        }
+
+            reviewYearList = yearList.stream()
+                .sorted((o1, o2) -> o1.getScore()- o2.getScore()).collect(Collectors.toList());
+//            System.out.println("sortedlist"+reviewSortedList);
+            return reviewYearList;
     }
 
     @RequestMapping(value = "/topInGenre/{genre}/{score}", method = RequestMethod.GET)
-    public ReviewEntity topInGenre(@PathVariable String genre, @PathVariable Integer score) {
-        {
+    public List<ReviewEntity> topInGenre(@PathVariable String genre, @PathVariable Integer score)
+    {
             Integer scoreValue = score.intValue();
             List<ReviewEntity> reviewList = review.findAll();
-            for (ReviewEntity reviewEntity : reviewList) {
-
-                if (genre.equals(reviewEntity.getCategory()) && scoreValue == reviewEntity.getScore().intValue()) {
-                    return reviewEntity;
+            List<ReviewEntity> genreList = new ArrayList<>();
+            List<ReviewEntity> reviewGenreList =new ArrayList<>();
+            for (ReviewEntity RE : reviewList) {
+                if (genre.equals(RE.getCategory())) {
+                    genreList.add(RE);
                 }
             }
-            return null;
-        }
+        reviewGenreList = genreList.stream()
+                .sorted((o1, o2) -> o1.getScore()- o2.getScore()).collect(Collectors.toList());
+            return reviewGenreList;
     }
 }
